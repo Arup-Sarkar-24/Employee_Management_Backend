@@ -43,6 +43,7 @@ public class EmployeeController {
         }
     }
 
+    //It is for update employee data
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") long id, Model model){
         Employee employee = employeeService.getEmployeeById(id);
