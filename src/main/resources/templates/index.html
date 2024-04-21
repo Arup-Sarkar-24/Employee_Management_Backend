@@ -13,9 +13,18 @@
         <table border="1" class="table table-striped table-responsive-md">
             <thead>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
+                <th>
+                    <a th:href="@{'/page/' +${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}">
+                    First Name</a>
+                </th>
+                <th>
+                    <a th:href="@{'/page/' +${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}}">
+                        Last Name</a>
+                    </th>
+                <th>
+                    <a th:href="@{'/page/' +${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}">
+                        Email</a>
+                    </th>
                 <th>Joining Date</th>
                 <th>Actions </th>
             </tr>
@@ -28,10 +37,42 @@
                 <td th:text="${employee.email}"></td>
                 <!-- Corrected attribute name to match the field name in Employee class -->
                 <td th:text="${employee.joiningDate}"></td>
-                <td><a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary">Update</a></td>
+                <td>
+                    <a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/showFormForDelete/{id}(id=${employee.id})}" class="btn btn-danger">Delete</a>
+                </td>
             </tr>
             </tbody>
         </table>
+        <div th:if="${totalPages > 1}">
+            <div class="row col-sm-10">
+                <div class="col-sm-2">
+                    Total Rows:[[${totalItems}]]
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${currentPage > 1}" th:href="@{'/page/1'+ '?sortField=' +${sortField} + '&sortDir='+${sortDir}}">First</a>
+                    <samp th:unless="${currentPage > 1}">First</samp>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}+ '?sortField=' +${sortField} + '&sortDir='+${sortDir}}">Previous</a>
+                    <samp th:unless="${currentPage > 1}">Previous</samp>
+                </div>
+                <div class="col-sm-6">
+                    <samp th:each="i : ${#numbers.sequence(1, totalPages)}">
+                        <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i} + '?sortField=' +${sortField} + '&sortDir='+${sortDir}}">[[${i}]]</a>
+                        <samp th:unless="${currentPage != i}">[[${i}]]</samp>
+                    </samp>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' +${sortField} + '&sortDir='+${sortDir}}">Next</a>
+                    <samp th:unless="${currentPage < totalPages}">Next</samp>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}+ '?sortField=' +${sortField} + '&sortDir='+${sortDir}}">Last</a>
+                    <samp th:unless="${currentPage < totalPages}">Last</samp>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
